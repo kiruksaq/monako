@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Центр красоты «Monako» — Кугеси (Демо WEBCRAFT21)</title>
+  <style>
+    :root {
+      --bg: #fdfbf9;
+      --surface: #ffffff;
+      --primary: #b8867b;
+      --primary-dark: #9c6b60;
+      --text: #2c2523;
+      --muted: #6e6360;
+      --accent-bg: #f6edea;
+      --border: #eadcd7;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .logo {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Водяные знаки по всей странице */
+    .watermark-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      opacity: 0.14;
+      user-select: none;
+    }
+
+    .watermark-row {
+      display: flex;
+      white-space: nowrap;
+      transform: rotate(-22deg) scale(1.2);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #2c2523;
+      gap: 48px;
+      margin: 24px 0;
+    }
+
+    /* Верхняя и нижняя демонстрационные плашки */
+    .demo-bar-top {
+      background: #2c2523;
+      color: #fff;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 13px;
+      position: relative;
+      z-index: 101;
+    }
+
+    .demo-bar-top strong {
+      color: #f3c6bc;
+    }
+
+    .demo-badge-float {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      background: rgba(44, 37, 35, 0.94);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 10000;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(243, 198, 188, 0.4);
+      pointer-events: none;
+    }
+
+    .demo-badge-float span {
+      color: #f3c6bc;
+    }
+
+    header {
+      background: rgba(253, 251, 249, 0.94);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+    }
+
+    .logo {
+      font-size: 28px;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.15s;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .hero {
+      padding: 80px 0 60px;
+      background: linear-gradient(135deg, #fdfbf9 0%, #f5e8e4 100%);
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 13px;
+      color: var(--primary-dark);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 60px);
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 0 auto 32px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    section {
+      padding: 70px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 45px;
+      font-size: 15px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 24px;
+    }
+
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: transform 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(184, 134, 123, 0.14);
+    }
+
+    .service-num {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      background: var(--accent-bg);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .service-card h3 {
+      font-size: 23px;
+      margin-bottom: 10px;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .service-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--accent-bg);
+      padding-top: 14px;
+    }
+
+    .price-tag {
+      font-weight: 600;
+      color: var(--primary-dark);
+      font-size: 14px;
+    }
+
+    .link-book {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .link-book:hover {
+      color: var(--primary);
+    }
+
+    .info-banner {
+      background: var(--accent-bg);
+      border-radius: 24px;
+      padding: 45px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      align-items: start;
+    }
+
+    .info-item h3 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .info-item p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+    }
+
+    .contact-row {
+      margin-bottom: 20px;
+    }
+
+    .contact-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .contact-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .contact-value a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .contact-value a:hover {
+      color: var(--primary);
+    }
+
+    .social-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-family: inherit;
+      font-size: 14px;
+      background: var(--bg);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Анимации появления */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero .badge,
+    .hero h1,
+    .hero p,
+    .hero-actions {
+      animation: fadeUp 0.75s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .contacts-grid {
+        grid-template-columns: 1fr;
+      }
+      .info-banner {
+        padding: 28px 20px;
+      }
+      .watermark-row {
+        font-size: 15px;
+        gap: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Сетка диагональных водяных знаков -->
+  <div class="watermark-overlay" aria-hidden="true">
+    <div class="watermark-row">
+      <span>DEMO · WEBCRAFT21.RU</span>
+      <span>ПРОТОТИП ДЛЯ MONAKO</span>
+      <span>DEMO · WEBCRAFT21.RU</span>
+      <span>ПРОТОТИП ДЛЯ MONAKO</span>
+    </div>
+    <div class="watermark-row">
+      <span>ПРОТОТИП ДЛЯ MONAKO</span>
+      <span>DEMO · WEBCRAFT21.RU</span>
+      <span>ПРОТОТИП ДЛЯ MONAKO</span>
+      <span>DEMO · WEBCRAFT21.RU</span>
+    </div>
+    <div class="watermark-row">
+      <span>DEMO · WEBCRAFT21.RU</span>
+      <span>ПРОТОТИП ДЛЯ MONAKO</span>
+      <span>DEMO · WEBCRAFT21.RU</span>
+      <span>ПРОТОТИП ДЛЯ MONAKO</span>
+    </div>
+    <div class="watermark-row">
+      <span>ПРОТОТИП ДЛЯ MONAKO</span>
+      <span>DEMO · WEBCRAFT21.RU</span>
+      <span>ПРОТОТИП ДЛЯ MONAKO</span>
+      <span>DEMO · WEBCRAFT21.RU</span>
+    </div>
+  </div>
+
+  <div class="demo-bar-top">
+    Демо-прототип сайта для ЦК «Monako» · Студия <strong>WEBCRAFT21</strong>
+  </div>
+
+  <div class="demo-badge-float">
+    DEMO · <span>WEBCRAFT21.RU</span>
+  </div>
+
+  <header>
+    <div class="container nav">
+      <a href="#" class="logo">MONAKO<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#schedule">Режим работы</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+      </ul>
+      <a href="#booking" class="btn">Записаться</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="badge">п. Кугеси · ул. Первомайская, 3а</div>
+      <h1>Центр красоты «Monako»</h1>
+      <p>Профессиональный уход за волосами, ногтевой сервис, визаж, массаж и косметологические услуги рядом с домом. Создаём ваш идеальный образ каждый день.</p>
+      <div class="hero-actions">
+        <a href="#booking" class="btn">Записаться онлайн</a>
+        <a href="https://vk.com/club123848163" target="_blank" rel="noopener" class="btn btn-outline">Мы ВКонтакте</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="container">
+      <h2 class="section-title">Наши услуги</h2>
+      <p class="section-subtitle">Полный спектр бьюти-услуг и пункт выдачи Faberlic в одном месте</p>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div>
+            <span class="service-num">01</span>
+            <h3>Парикмахерские услуги</h3>
+            <p>Женские, мужские и детские стрижки, окрашивание, укладки и уходовые процедуры для здоровья волос.</p>
+          </div>
+          <div class="service-footer">
+            <span class="price-tag">Уточнить прайс</span>
+            <a href="#booking" class="link-book" onclick="selectService('Парикмахерские услуги')">Записаться &rarr;</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div>
+            <span class="service-num">02</span>
+            <h3>Ногтевой сервис</h3>
+            <p>Аккуратный маникюр и педикюр, выравнивание, укрепление и стойкое покрытие с современным дизайном.</p>
+          </div>
+          <div class="service-footer">
+            <span class="price-tag">Уточнить прайс</span>
+            <a href="#booking" class="link-book" onclick="selectService('Ногтевой сервис')">Записаться &rarr;</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div>
+            <span class="service-num">03</span>
+            <h3>Наращивание ресниц</h3>
+            <p>От естественной классики до выразительного объёма. Подбор изгиба и длины с учётом формы глаз.</p>
+          </div>
+          <div class="service-footer">
+            <span class="price-tag">Уточнить прайс</span>
+            <a href="#booking" class="link-book" onclick="selectService('Наращивание ресниц')">Записаться &rarr;</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div>
+            <span class="service-num">04</span>
+            <h3>Услуги визажиста</h3>
+            <p>Дневной, вечерний и свадебный макияж, оформление и окрашивание бровей для особого случая.</p>
+          </div>
+          <div class="service-footer">
+            <span class="price-tag">Уточнить прайс</span>
+            <a href="#booking" class="link-book" onclick="selectService('Услуги визажиста')">Записаться &rarr;</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div>
+            <span class="service-num">05</span>
+            <h3>Эпиляция (воск / сахар)</h3>
+            <p>Бережное удаление нежелательных волос воском и шугарингом для гладкости кожи надолго.</p>
+          </div>
+          <div class="service-footer">
+            <span class="price-tag">Уточнить прайс</span>
+            <a href="#booking" class="link-book" onclick="selectService('Эпиляция')">Записаться &rarr;</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div>
+            <span class="service-num">06</span>
+            <h3>Массаж и офис Faberlic</h3>
+            <p>Расслабляющий и оздоровительный массаж. Также в здании работает официальный офис Faberlic.</p>
+          </div>
+          <div class="service-footer">
+            <span class="price-tag">Уточнить прайс</span>
+            <a href="#booking" class="link-book" onclick="selectService('Массаж / Faberlic')">Записаться &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule" style="padding-top: 0;">
+    <div class="container">
+      <div class="info-banner">
+        <div class="info-item">
+          <h3>Удобное расположение</h3>
+          <p>п. Кугеси, ул. Первомайская, д. 3а (здание магазина «Пятёрочка», вход сбоку).</p>
+        </div>
+        <div class="info-item">
+          <h3>График работы</h3>
+          <p>Будние дни: <strong>с 8:00 до 20:00</strong><br>Выходные дни: <strong>с 8:00 до 17:00</strong></p>
+        </div>
+        <div class="info-item">
+          <h3>Быстрая связь</h3>
+          <p>Запись по телефону, через группу ВКонтакте или онлайн-форму на сайте.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <div class="container">
+      <h2 class="section-title">Контакты и запись</h2>
+      <p class="section-subtitle">Оставьте заявку, и администратор свяжется с вами для выбора удобного времени</p>
+
+      <div class="contacts-grid">
+        <div class="contact-card">
+          <div class="contact-row">
+            <div class="contact-label">Адрес</div>
+            <div class="contact-value">п. Кугеси, ул. Первомайская, 3а (здание «Пятёрочки», вход сбоку)</div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-label">Телефоны для записи</div>
+            <div class="contact-value">
+              <a href="tel:+79379503440">+7 (937) 950-34-40</a><br>
+              <a href="tel:+79279966774">+7 (927) 996-67-74</a>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-label">ВКонтакте</div>
+            <div class="contact-value">
+              <a href="https://vk.com/ckmonako" target="_blank" rel="noopener">vk.com/ckmonako</a>
+            </div>
+          </div>
+          <div class="social-buttons">
+            <a href="tel:+79379503440" class="btn">Позвонить</a>
+            <a href="https://vk.com/club123848163" target="_blank" rel="noopener" class="btn btn-outline">Написать в ВК</a>
+          </div>
+        </div>
+
+        <div class="contact-card" id="booking">
+          <h3 style="font-size: 26px; margin-bottom: 16px;">Онлайн-запись</h3>
+          <form onsubmit="handleBooking(event)">
+            <div class="form-group">
+              <label for="clientName">Ваше имя</label>
+              <input type="text" id="clientName" placeholder="Например, Анна" required />
+            </div>
+            <div class="form-group">
+              <label for="clientPhone">Телефон или ссылка на ВК</label>
+              <input type="text" id="clientPhone" placeholder="+7 (900) 000-00-00" required />
+            </div>
+            <div class="form-group">
+              <label for="serviceSelect">Выберите услугу</label>
+              <select id="serviceSelect">
+                <option value="Парикмахерские услуги">Парикмахерские услуги</option>
+                <option value="Ногтевой сервис">Ногтевой сервис (маникюр / педикюр)</option>
+                <option value="Наращивание ресниц">Наращивание ресниц</option>
+                <option value="Услуги визажиста">Услуги визажиста</option>
+                <option value="Эпиляция">Эпиляция (воск / сахар)</option>
+                <option value="Массаж / Faberlic">Массаж / офис Faberlic</option>
+              </select>
+            </div>
+            <button type="submit" class="btn" style="width: 100%;">Отправить заявку</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2026 Центр красоты «Monako», п. Кугеси. Демо-версия подготовлена WEBCRAFT21.
+  </footer>
+
+  <script>
+    function selectService(name) {
+      document.getElementById('serviceSelect').value = name;
+    }
+
+    function handleBooking(e) {
+      e.preventDefault();
+      const name = document.getElementById('clientName').value;
+      const service = document.getElementById('serviceSelect').value;
+      alert('Спасибо, ' + name + '! Ваша заявка на услугу «' + service + '» принята (демо-режим). После запуска сайта заявки будут приходить напрямую администратору.');
+      e.target.reset();
+    }
+
+    const targets = document.querySelectorAll('.service-card, .info-banner, .contact-card');
+    targets.forEach((el, i) => {
+      el.classList.add('reveal');
+      el.style.transitionDelay = (i % 3) * 0.1 + 's';
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    targets.forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>
